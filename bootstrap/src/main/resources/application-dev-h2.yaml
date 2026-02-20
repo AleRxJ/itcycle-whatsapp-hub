@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:whatsapp_hub
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: true
+  # Desactivar RabbitMQ y Redis
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+# Configuración de eventos sin RabbitMQ
+events:
+  rabbitmq:
+    enabled: false
+  n8n:
+    trigger:
+      enabled: false
+
+whatsapp:
+  client:
+    access-token: ${WHATSAPP_ACCESS_TOKEN:dummy_token_for_dev}
+    api-url: https://graph.facebook.com/v18.0
+  webhook:
+    verify-token: ${WHATSAPP_VERIFY_TOKEN:itcycle_whatsapp_hub_verify_token}
+
+n8n:
+  webhook:
+    base-url: http://localhost:5678
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  health:
+    rabbit:
+      enabled: false
+    redis:
+      enabled: false
+
