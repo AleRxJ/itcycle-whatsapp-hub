@@ -1,8 +1,9 @@
 package com.itcycle.whatsapp.domain.port.out;
 
-import com.itcycle.whatsapp.domain.model.Conversation;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.itcycle.whatsapp.domain.model.Conversation;
 
 /**
  * ConversationRepositoryPort - output port for conversation persistence operations.

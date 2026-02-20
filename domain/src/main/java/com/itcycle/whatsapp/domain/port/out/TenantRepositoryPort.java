@@ -1,8 +1,9 @@
 package com.itcycle.whatsapp.domain.port.out;
 
-import com.itcycle.whatsapp.domain.model.Tenant;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.itcycle.whatsapp.domain.model.Tenant;
 
 /**
  * TenantRepositoryPort - output port for tenant persistence operations.

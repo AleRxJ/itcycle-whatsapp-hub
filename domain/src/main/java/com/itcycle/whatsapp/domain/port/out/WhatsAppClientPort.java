@@ -1,7 +1,5 @@
 package com.itcycle.whatsapp.domain.port.out;
 
-import java.util.Map;
-
 /**
  * WhatsAppClientPort - output port for WhatsApp provider integration.
  * This interface defines the contract for sending messages to WhatsApp.

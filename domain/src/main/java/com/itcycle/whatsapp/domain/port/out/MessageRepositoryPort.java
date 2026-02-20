@@ -1,9 +1,10 @@
 package com.itcycle.whatsapp.domain.port.out;
 
-import com.itcycle.whatsapp.domain.model.Message;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.itcycle.whatsapp.domain.model.Message;
 
 /**
  * MessageRepositoryPort - output port for message persistence operations.

@@ -1,8 +1,9 @@
 package com.itcycle.whatsapp.domain.port.out;
 
-import com.itcycle.whatsapp.domain.model.Customer;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.itcycle.whatsapp.domain.model.Customer;
 
 /**
  * CustomerRepositoryPort - output port for customer persistence operations.
