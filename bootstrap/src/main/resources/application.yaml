@@ -95,7 +95,7 @@ events:
     enabled: true
   n8n:
     trigger:
-      enabled: true
+      enabled: false  # Disabled - using RabbitMQ trigger in n8n instead of webhook
 
 rabbitmq:
   exchange:

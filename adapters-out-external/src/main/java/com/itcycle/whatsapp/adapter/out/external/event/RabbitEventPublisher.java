@@ -61,9 +61,32 @@ public class RabbitEventPublisher implements EventPublisherPort {
                 payload.put("conversationId", event.getConversationId().toString());
                 payload.put("customerId", event.getCustomerId().toString());
                 payload.put("tenantId", event.getTenantId().toString());
+                payload.put("from", event.getFrom());
+                payload.put("to", event.getTo());
+                payload.put("customerName", event.getCustomerName());
                 payload.put("content", event.getContent());
+                payload.put("text", event.getContent()); // Alias for backward compatibility
                 payload.put("messageType", event.getMessageType());
+                payload.put("whatsappMessageId", event.getWhatsappMessageId());
                 payload.put("timestamp", event.getTimestamp().toString());
+                
+                // Add media metadata if present
+                if (event.hasMedia()) {
+                    Map<String, Object> mediaMap = new HashMap<>();
+                    mediaMap.put("mediaId", event.getMedia().getMediaId());
+                    mediaMap.put("mimeType", event.getMedia().getMimeType());
+                    mediaMap.put("downloadUrl", event.getMedia().getDownloadUrl());
+                    mediaMap.put("filename", event.getMedia().getFilename());
+                    mediaMap.put("caption", event.getMedia().getCaption());
+                    mediaMap.put("fileSize", event.getMedia().getFileSize());
+                    mediaMap.put("sha256", event.getMedia().getSha256());
+                    mediaMap.put("mediaType", event.getMedia().getMediaType());
+                    
+                    payload.put("media", mediaMap);
+                    payload.put("hasMedia", true);
+                } else {
+                    payload.put("hasMedia", false);
+                }
                 
                 n8nClient.triggerFlow("message-received", payload);
             } catch (Exception e) {

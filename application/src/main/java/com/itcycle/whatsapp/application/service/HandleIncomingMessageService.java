@@ -6,6 +6,7 @@ import com.itcycle.whatsapp.application.port.in.HandleIncomingMessageUseCase;
 import com.itcycle.whatsapp.domain.event.IncomingMessageEvent;
 import com.itcycle.whatsapp.domain.model.*;
 import com.itcycle.whatsapp.domain.port.out.*;
+import com.itcycle.whatsapp.domain.valueobject.MediaMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class HandleIncomingMessageService implements HandleIncomingMessageUseCas
     private final MessageRepositoryPort messageRepository;
     private final EventPublisherPort eventPublisher;
     private final WhatsAppClientPort whatsAppClient;
+    private final WhatsAppMediaPort whatsAppMediaPort;
     
     @Override
     public MessageResponse handle(IncomingMessageCommand command) {
@@ -135,13 +137,28 @@ public class HandleIncomingMessageService implements HandleIncomingMessageUseCas
     }
     
     private void publishEvent(Message message, Conversation conversation, Customer customer, Tenant tenant) {
+        // Build media metadata if this message has media
+        MediaMetadata mediaMetadata = null;
+        if (message.hasMedia()) {
+            mediaMetadata = MediaMetadata.builder()
+                    .mediaId(null) // Not stored in Message entity currently
+                    .mimeType(message.getMimeType())
+                    .downloadUrl(message.getMediaUrl())
+                    .build();
+        }
+        
         IncomingMessageEvent event = IncomingMessageEvent.builder()
                 .messageId(message.getId())
                 .conversationId(conversation.getId())
                 .customerId(customer.getId())
                 .tenantId(tenant.getId())
+                .from(customer.getPhoneNumber())
+                .to(tenant.getWhatsappPhoneNumberId())
+                .customerName(customer.getName())
                 .content(message.getContent())
                 .messageType(message.getType().name())
+                .media(mediaMetadata)
+                .whatsappMessageId(message.getWhatsappMessageId())
                 .timestamp(message.getTimestamp())
                 .build();
         

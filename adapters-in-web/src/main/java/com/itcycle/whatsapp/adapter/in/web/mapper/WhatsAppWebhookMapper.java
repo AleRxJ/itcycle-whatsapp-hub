@@ -37,6 +37,7 @@ public class WhatsAppWebhookMapper {
                 .whatsappPhoneNumberId(value.getMetadata().getPhoneNumberId())
                 .fromPhoneNumber(message.getFrom())
                 .whatsappUserId(contact != null ? contact.getWaId() : message.getFrom())
+                .customerName(contact != null && contact.getProfile() != null ? contact.getProfile().getName() : null)
                 .messageType(message.getType())
                 .timestamp(parseLong(message.getTimestamp()));
         
@@ -49,28 +50,35 @@ public class WhatsAppWebhookMapper {
                 break;
             case "image":
                 if (message.getImage() != null) {
-                    builder.mediaUrl(message.getImage().getLink())
+                    builder.mediaId(message.getImage().getId())
+                           .mediaUrl(message.getImage().getLink())
                            .mimeType(message.getImage().getMimeType())
+                           .mediaCaption(message.getImage().getCaption())
                            .textContent(message.getImage().getCaption());
                 }
                 break;
             case "audio":
                 if (message.getAudio() != null) {
-                    builder.mediaUrl(message.getAudio().getLink())
+                    builder.mediaId(message.getAudio().getId())
+                           .mediaUrl(message.getAudio().getLink())
                            .mimeType(message.getAudio().getMimeType());
                 }
                 break;
             case "video":
                 if (message.getVideo() != null) {
-                    builder.mediaUrl(message.getVideo().getLink())
+                    builder.mediaId(message.getVideo().getId())
+                           .mediaUrl(message.getVideo().getLink())
                            .mimeType(message.getVideo().getMimeType())
+                           .mediaCaption(message.getVideo().getCaption())
                            .textContent(message.getVideo().getCaption());
                 }
                 break;
             case "document":
                 if (message.getDocument() != null) {
-                    builder.mediaUrl(message.getDocument().getLink())
+                    builder.mediaId(message.getDocument().getId())
+                           .mediaUrl(message.getDocument().getLink())
                            .mimeType(message.getDocument().getMimeType())
+                           .filename(message.getDocument().getFilename())
                            .textContent(message.getDocument().getFilename());
                 }
                 break;
