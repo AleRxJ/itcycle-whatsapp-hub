@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+### Secrets and API Keys ###
+*.env
+*.env.local
+.env.production
+*_WITH_KEYS.json
+config/secrets.yaml
