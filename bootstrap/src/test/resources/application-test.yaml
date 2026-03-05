@@ -1,0 +1,48 @@
+# Test profile configuration
+spring:
+  application:
+    name: itcycle-whatsapp-hub-test
+  
+  datasource:
+    # Testcontainers will override these
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  
+  # Disable RabbitMQ for tests (Testcontainers provides it)
+  rabbitmq:
+    host: localhost
+
+# Disable external integrations in tests
+whatsapp:
+  meta:
+    api:
+      url: https://graph.facebook.com/v18.0
+    access:
+      token: test_token
+
+n8n:
+  webhook:
+    base:
+      url: http://localhost:5678/webhook
+    enabled: false
+
+events:
+  rabbitmq:
+    enabled: true
+  n8n:
+    trigger:
+      enabled: false
+
+logging:
+  level:
+    root: INFO
+    com.itcycle.whatsapp: DEBUG
+    org.testcontainers: INFO
